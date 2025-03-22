@@ -10,7 +10,7 @@ void main() async {
   // Register FirebaseService as a singleton in GetIt
   GetIt.instance.registerSingleton<FirebaseService>(FirebaseService());
   runApp(MaterialApp(debugShowCheckedModeBanner: false,
-  home: AddProductPage(),)); // Run the app after Firebase is initialized
+  home: AddProductPage(), )); // Run the app after Firebase is initialized
 }
 
 // class MyApp extends StatelessWidget {
