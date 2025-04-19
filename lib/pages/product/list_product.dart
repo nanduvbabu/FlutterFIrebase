@@ -38,12 +38,41 @@ class ProductListPage extends StatelessWidget {
                   ),
                   isThreeLine: true,
                   leading: CircleAvatar(child: Text(product.name[0].toUpperCase())),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _deleteProduct(product.id, context),
+                  ),
                 ),
               );
             },
           );
         },
       ),
+    );
+  }
+
+  void _deleteProduct(String productId, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Delete Product"),
+          content: Text("Are you sure you want to delete this product?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _firestoreService.deleteProduct(productId);
+                Navigator.of(context).pop();
+              },
+              child: Text("Delete", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
     );
   }
 }
