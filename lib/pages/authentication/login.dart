@@ -20,7 +20,7 @@ class _BiometricLoginPageState extends State<BiometricLoginPage> {
   Future<void> _logoutUser() async {
     await FirebaseAuth.instance.signOut();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Logged out successfully')),
+      SnackBar(content: Text('Logged ousuccessfully')),
     );
     Navigator.pushReplacementNamed(context, '/login'); // Redirect to Login Page
   }
