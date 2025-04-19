@@ -1,79 +1,44 @@
-import 'package:crud/add_product_page.dart';
+import 'package:crud/pages/product/add_product_page.dart';
+import 'package:crud/pages/authentication/login.dart';
 import 'package:flutter/material.dart';
-import 'package:crud/firebase_services.dart';
+import 'package:crud/services/firebase_services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
+import 'package:crud/pages/authentication/register.dart';
+import 'package:crud/pages/product/list_product.dart';
+import 'package:crud/pages/main/admin_home_page.dart';
+import 'package:crud/constans/app_routes.dart';
+import 'package:crud/pages/product/product_crud.dart';
+import 'package:crud/pages/chat/chat.dart';
+import 'package:crud/pages/chat/chat_list.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure proper initialization
   await Firebase.initializeApp(); // Initialize Firebase
   // Register FirebaseService as a singleton in GetIt
   GetIt.instance.registerSingleton<FirebaseService>(FirebaseService());
-  runApp(MaterialApp(debugShowCheckedModeBanner: false,
-  home: AddProductPage(), )); // Run the app after Firebase is initialized
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.home,
+      routes: {
+        AppRoutes.login: (context) => BiometricLoginPage(),
+        AppRoutes.admin: (context) => AdminHomePage(),
+        // AppRoutes.productcrud: (context) => ProductCrud(),
+        AppRoutes.productadd:(context)=> AddProductPage(),
+        AppRoutes.list:(context)=> ProductListPage(),
+        AppRoutes.user:(context)=> RegisterPage(),
+        AppRoutes.productcrud: (context) => ChatListPage(),
+        '/chat': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map;
+          return ChatPage(
+            chatId: args['chatId'],
+            receiverId: args['receiverId'],
+            receiverEmail: args['receiverEmail'],
+          );
+        }
+      },
+    ),
+  );
 }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//       ),
-//       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-//     );
-//   }
-// }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-//
-//   final String title;
-//
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-//
-//   void _incrementCounter() {
-//     // Retrieve FirebaseService instance from GetIt
-//     FirebaseService fbs = GetIt.instance<FirebaseService>();
-//     fbs.addUser(); // Call addUser method from FirebaseService
-//
-//     setState(() {
-//       _counter++;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             const Text('You have pushed the button this many times:'),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headlineMedium,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }

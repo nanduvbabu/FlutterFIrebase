@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({Key? key}) : super(key: key);
 
+  // 🔹 Logout Function
+  void _logoutUser(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Logged out successfully')),
+    );
+    Navigator.pushReplacementNamed(context, '/'); // Redirect to Login Page
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Admin Home')),
+      appBar: AppBar(
+        title: Text('Admin Home'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () => _logoutUser(context), // 🔹 Logout Button
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.count(
@@ -34,10 +51,9 @@ class AdminHomePage extends StatelessWidget {
                 ),
               ),
             ),
-            // another card inside the above children
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/productcrud'); // Navigate to product list page
+                Navigator.pushNamed(context, '/user'); // Navigate to user list page
               },
               child: Card(
                 elevation: 4,
@@ -48,13 +64,13 @@ class AdminHomePage extends StatelessWidget {
                     children: [
                       Icon(Icons.supervised_user_circle, size: 40, color: Colors.blue),
                       SizedBox(height: 10),
-                      Text('Products', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      Text('Users', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
               ),
             ),
-            // You can add more cards here like Orders, Rentals, etc.
+            // 🔹 You can add more cards here for Orders, Rentals, etc.
           ],
         ),
       ),

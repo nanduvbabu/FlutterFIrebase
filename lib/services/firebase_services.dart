@@ -13,10 +13,17 @@ class FirebaseService {
 
   Stream<List<Product>> getAllProducts() {
     return _productCollection.snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) {
+      var ListData = snapshot.docs.map((doc) {
         return Product.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }).toList();
+      return ListData;
     });
+  }
+
+
+  // Delete a product
+  Future<void> deleteProduct(String productId) async {
+    await _productCollection.doc(productId).delete();
   }
 }
 
